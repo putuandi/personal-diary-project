@@ -22,6 +22,22 @@
     <link href="https://fonts.googleapis.com/css2?family=Jua&amp;display=swap" rel="stylesheet" />
 
     <style></style>
+    <script>
+        $(document).ready(function(){
+            listing();
+        });
+
+        function listing(){
+            $.ajax({
+                type: 'GET',
+                url: '/diary?sample_give=hello',
+                data: {},
+                success: function(response){
+                    console.log(response);
+                }
+            })
+        }
+    </script>
 </head>
 
 <body>
