@@ -1,4 +1,18 @@
-from flask import Flask, render_template, jsonify, request
+import os
+from os.path import join, dirname
+from dotenv import load_dotenv
+
+from flask import Flask, render_template, request, jsonify
+from pymongo import MongoClient
+
+dotenv_path = join(dirname(__file__), '.env')
+load_dotenv(dotenv_path)
+
+MONGODB_URI = os.environ.get("MONGODB_URI")
+DB_NAME =  os.environ.get("DB_NAME")
+
+client = MongoClient(MONGODB_URI)
+db = client[DB_NAME]
 
 app = Flask(__name__)
 
@@ -8,14 +22,22 @@ def home():
 
 @app.route('/diary', methods=['GET'])
 def show_diary():
-    sample_receive = request.args.get('sample_give')
-    print(sample_receive)
-    return jsonify({'message': 'data received all good!!!'})
+    # sample_receive = request.args.get('sample_give')
+    # print(sample_receive)
+    articles = list(db.diary.find({}, {'_id':False}))
+    return jsonify({'articles': articles})
 
 @app.route('/diary', methods=['POST'])
-def add_to_diary():
-    sample_receive = request.form.get('sample_give')
-    print(sample_receive)
+def save_diary():
+    # sample_receive = request.form.get('sample_give')
+    # print(sample_receive)
+    title_receive = request.form.get('title_give')
+    content_receive = request.form.get('content_give')
+    doc = {
+        'title': title_receive,
+        'content' : content_receive
+    }
+    db.diary.insert_one(doc)
     return jsonify({'msg': 'data was saved!'})
 
 if __name__ == '__main__':

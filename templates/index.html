@@ -28,23 +28,59 @@
         });
 
         function listing() {
+            $('#cards-box').empty()
             $.ajax({
                 type: 'GET',
-                url: '/diary?sample_give=hello',
+                url: '/diary',
                 data: {},
                 success: function (response) {
-                    console.log(response);
+                    let articles = response['articles'];
+                    for (let i = 0; i < articles.length; i++) {
+                        let title = articles[i]['title'];
+                        let content = articles[i]['content'];
+                        let temp_html = `
+                        <div class="col-4">
+                            <div class="card">
+                                <img src="https://www.gardendesign.com/pictures/images/675x529Max/site_3/helianthus-yellow-flower-pixabay_11863.jpg"
+                                    class="card-img-top" alt="..." />
+                                <div class="card-body">
+                                    <h5 class="card-title">${title}</h5>
+                                    <p class="card-text">
+                                        ${content}
+                                    </p>
+                                    <h6 class="card-subtitle mb-2 text-muted">2022.02.15</h6>
+                                </div>
+                            </div>
+                        </div>
+                        `;
+                        $('#cards-box').append(temp_html);
+                    }
                 }
             })
         }
 
         function posting() {
+            let title = $('#image-title').val();
+            let description = $('#image-description').val();
+            if (!title && !description) {
+                return alert('Title and description are still empty!');
+            }
+            if (!title) {
+                return alert('Hey user, you forgot a title!');
+            }
+            if (!description) {
+                return alert('Hey user, you forgot to write a description!');
+            }
             $.ajax({
                 type: 'POST',
                 url: '/diary',
-                data: {sample_give: 'hi world'},
+                data: {
+                    title_give: title,
+                    content_give: description
+                },
                 success: function (response) {
                     alert(response['msg']);
+                    window.location.reload();
                 }
             })
         }
@@ -70,62 +106,6 @@
             </div>
         </div>
         <div class="row justify-content-start" id="cards-box">
-            <div class="col-4">
-                <div class="card">
-                    <img src="https://www.gardendesign.com/pictures/images/675x529Max/site_3/helianthus-yellow-flower-pixabay_11863.jpg"
-                        class="card-img-top" alt="..." />
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">
-                            Some quick example text to build on the card title and make up
-                            the bulk of the card's content.
-                        </p>
-                        <h6 class="card-subtitle mb-2 text-muted">2022.02.15</h6>
-                    </div>
-                </div>
-            </div>
-            <div class="col-4">
-                <div class="card">
-                    <img src="https://www.gardendesign.com/pictures/images/675x529Max/site_3/helianthus-yellow-flower-pixabay_11863.jpg"
-                        class="card-img-top" alt="..." />
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">
-                            Some quick example text to build on the card title and make up
-                            the bulk of the card's content.
-                        </p>
-                        <h6 class="card-subtitle mb-2 text-muted">2022.02.15</h6>
-                    </div>
-                </div>
-            </div>
-            <div class="col-4">
-                <div class="card">
-                    <img src="https://www.gardendesign.com/pictures/images/675x529Max/site_3/helianthus-yellow-flower-pixabay_11863.jpg"
-                        class="card-img-top" alt="..." />
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">
-                            Some quick example text to build on the card title and make up
-                            the bulk of the card's content.
-                        </p>
-                        <h6 class="card-subtitle mb-2 text-muted">2022.02.15</h6>
-                    </div>
-                </div>
-            </div>
-            <div class="col-4">
-                <div class="card">
-                    <img src="https://www.gardendesign.com/pictures/images/675x529Max/site_3/helianthus-yellow-flower-pixabay_11863.jpg"
-                        class="card-img-top" alt="..." />
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">
-                            Some quick example text to build on the card title and make up
-                            the bulk of the card's content.
-                        </p>
-                        <h6 class="card-subtitle mb-2 text-muted">2022.02.14</h6>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 </body>
