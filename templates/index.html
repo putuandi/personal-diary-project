@@ -101,7 +101,7 @@
                                             ${content}
                                         </p>
                                     </div>
-                                    <button onclick="read()" class="read">Read more</button>
+                                    <button class="read">Read more</button>
                                 </div>
                                 <h6 class="card-time mb-2 text-muted">${time_upload}</h6>
                             </div>
@@ -109,6 +109,20 @@
                         `;
                         $('#cards-box').append(temp_html);
                     }
+
+                    $('.read').click(function () {
+                        let readCard = $(this).prev('.box').find('.card-text');
+                        readCard.toggleClass('expanded');
+                        if (readCard.hasClass('expanded')) {
+                            readCard.css('overflow', 'visible');
+                            readCard.css('height', 'auto');
+                            $(this).text('Read less');
+                        } else {
+                            readCard.css('overflow', 'hidden');
+                            readCard.css('height', '220px');
+                            $(this).text('Read more');
+                        }
+                    });
                 }
             })
         }
@@ -149,18 +163,6 @@
             })
         }
 
-        function read() {
-            let i = 0
-            if (!i) {
-                document.getElementsByClassName("card-text").style.overflow = "none";
-                document.getElementsByClassName("read").innerHTML = "Read less";
-                i = 1
-            } else {
-                document.getElementsByClassName("card-text").style.overflow = "overflow";
-                document.getElementsByClassName("read").innerHTML = "Read more";
-                i = 0
-            }
-        }
     </script>
 </head>
 
