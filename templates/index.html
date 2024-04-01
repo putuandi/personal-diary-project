@@ -112,14 +112,17 @@
 
                     $('.read').click(function () {
                         let readCard = $(this).prev('.box').find('.card-text');
+                        let buttonRead = $(this);
                         readCard.toggleClass('expanded');
                         if (readCard.hasClass('expanded')) {
                             readCard.css('overflow', 'visible');
                             readCard.css('height', 'auto');
+                            buttonRead.css('background-color', 'red');
                             $(this).text('Read less');
                         } else {
                             readCard.css('overflow', 'hidden');
                             readCard.css('height', '220px');
+                            buttonRead.css('background-color', 'blue');
                             $(this).text('Read more');
                         }
                     });
