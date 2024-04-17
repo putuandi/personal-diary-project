@@ -20,6 +20,12 @@ app = Flask(__name__)
 def home():
     return render_template( 'index.html' )
 
+@app.route("/diary/delete", methods=["POST"])
+def delete():
+    title_delete = request.form['delete_title']
+    db.diary.delete_one({'title' : title_delete})
+    return jsonify({'msg': 'delete done!'})
+
 @app.route('/diary', methods=['GET'])
 def show_diary():
     articles = list(db.diary.find({}, {'_id':False}))
@@ -59,6 +65,8 @@ def save_diary():
     }
     db.diary.insert_one(doc)
     return jsonify({'msg': 'data was saved!'})
+
+
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)

@@ -102,6 +102,7 @@
                                         </p>
                                     </div>
                                     <button class="read">Read more</button>
+                                    <button class="delete">Delete</button>
                                 </div>
                                 <h6 class="card-time mb-2 text-muted">${time_upload}</h6>
                             </div>
@@ -126,8 +127,25 @@
                             $(this).text('Read more');
                         }
                     });
+
+                    $('.delete').click(function () {
+                        let title = $(this).siblings('.card-title').text();
+                        deletePost(title);
+                    });
                 }
             })
+        }
+
+        function deletePost(title) {
+            $.ajax({
+                type: 'POST',
+                url: "/diary/delete",
+                data: { delete_title: title },
+                success: function (response) {
+                    alert(response['msg'])
+                    window.location.reload();
+                }
+            });
         }
 
         function posting() {
